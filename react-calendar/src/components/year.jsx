@@ -6,51 +6,46 @@ class Year extends React.Component{
   constructor(props){
     super(props);
 
-    this.state = this.props.data;
-    this.state.activeDay = { day: null, month: null };
+    this.state = {
+      months: this.props.data.months,
+      activeDay: { day: null, month: null, data: { type: "" } }
+    };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(dateInfo){
-    this.setState( { activeDay: dateInfo });
+  handleClick(activeDayInfo){
+    this.setState( { activeDay: activeDayInfo });
   }
 
   render(){
     let activeDay = this.state.activeDay;
+    let activeDayInfo = activeDay.data ? activeDay.data.type : "";
 
     if(activeDay.day === null && activeDay.month === null){
       activeDay= { day: "unselected", month: "unselected" };
-    }
-
-    let daysOfWeek = {
-      0: "Sunday",
-      1: "Monday",
-      2: "Tuesday",
-      3: "Wednesday",
-      4: "Thursday",
-      5: "Friday",
-      6: "Saturday"
     }
 
     return(
       <div className="year-container">
 
         <div className="months">
-          <Month
-            data={this.state.months[5]}
-            activeDay={this.state.activeDay}
-            handleClick={this.handleClick}/>
+          {
+            Object.keys(this.state.months).map((id) => {
+              return <Month
+                key={this.state.months[id].month}
+                data={this.state.months[id]}
+                activeDay={this.state.activeDay}
+                handleClick={this.handleClick}/>
+              })
+          }
 
-          <Month
-            data={this.state.months[6]}
-            activeDay={this.state.activeDay}
-            handleClick={this.handleClick}/>
         </div>
         <div className="sidebar">
           <div className="selected-day">
-            <p>Selected Day: {activeDay.day}</p>
-            <p>Selected Month: {activeDay.month}</p>
+            <p>Day: { activeDay.day }</p>
+            <p>Month: { activeDay.month }</p>
+            <p>Info: { activeDayInfo }</p>
           </div>
         </div>
       </div>

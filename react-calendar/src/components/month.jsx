@@ -9,6 +9,8 @@ class Month extends React.Component{
     this.state = this.props.data;
     this.state.activeDay = this.props.activeDay;
 
+    this.populateCell = this.populateCell.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps){
@@ -17,10 +19,43 @@ class Month extends React.Component{
     }
   }
 
+  populateCell(dayNumCounter, dayOfWeek){
+    let startDayOfWeek = this.state.start.dayOfWeek;
+    let endDay = this.state.end.dayNum;
+    let dayInfo = "";
+
+    if(startDayOfWeek === dayOfWeek
+      || (dayNumCounter > 0 && dayNumCounter < endDay)){
+
+      let dayInfo = "" || this.state.info[dayNumCounter];
+      let isActive = false;
+
+      if(this.state.activeDay.day === dayNumCounter
+        && this.state.activeDay.month === this.state.month){
+        isActive = true;
+      }
+
+      return(
+        <Day
+          key={`${this.state.month}-${dayNumCounter}`}
+          dayNumber={dayNumCounter}
+          data={dayInfo}
+          month={this.state.month}
+          isActive={isActive}
+          handleClick={this.props.handleClick}
+        />
+      );
+
+    } else {
+      return(
+        <td></td>
+      )
+    }
+  }
+
   render(){
     let startDayOfWeek = this.state.start.dayOfWeek;
     let endDay = this.state.end.dayNum;
-
     let dayNumCounter = 0;
 
     let daysOfWeek = {
@@ -51,34 +86,15 @@ class Month extends React.Component{
             {
               [...Array(this.state.numberOfWeeks).keys()].map((i) =>{
                 return(
-                  <tr>
+                  <tr key={`${this.state.month}-week-${i}`}>
                     {
-                      Object.keys(daysOfWeek).map((id) =>{
-
+                      Object.keys(daysOfWeek).map((id) => {
+                        
                         if(startDayOfWeek === daysOfWeek[id]
                           || (dayNumCounter > 0 && dayNumCounter < endDay)){
-                          dayNumCounter++;
-
-                          let isActive = false;
-                          if(this.state.activeDay.day === dayNumCounter
-                            && this.state.activeDay.month === this.state.month){
-                            isActive = true;
-                          }
-
-                          return(
-                            <Day
-                              data={dayNumCounter}
-                              month={this.state.month}
-                              isActive={isActive}
-                              handleClick={this.props.handleClick}
-                            />
-                          );
-
-                        } else {
-                          return(
-                            <td></td>
-                          )
+                            dayNumCounter++;
                         }
+                        return this.populateCell(dayNumCounter, daysOfWeek[id]);
                       })
                     }
                   </tr>

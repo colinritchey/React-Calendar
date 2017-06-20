@@ -17,11 +17,11 @@ export const yearData = {
 
       info: {
         3: {
-          data: "Flight"
+          type: "Flight"
         },
 
         18: {
-          data: "Another"
+          type: "Ship"
         }
 
       }
@@ -43,12 +43,16 @@ export const yearData = {
       },
 
       info: {
-        3: {
-          data: "Flight"
+        7: {
+          type: "Flight"
         },
 
-        18: {
-          data: "Another"
+        16: {
+          type: "Flight"
+        },
+
+        27: {
+          type: "Ship"
         }
 
       }

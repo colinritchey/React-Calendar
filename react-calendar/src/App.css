@@ -1,3 +1,9 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -48,7 +54,7 @@ table{
 .selected-day{
   margin-top: 10px;
   padding: 10px;
-  height: 100px;
+  height: 150px;
   width: 150px;
   border: 1px solid black;
 }
@@ -62,9 +68,14 @@ table td {
   background-color: lightgreen;
 }
 
-td.active{
+td.day-info {
+  background-color: lightcyan;
+}
+
+td.active {
   background-color: green;
 }
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

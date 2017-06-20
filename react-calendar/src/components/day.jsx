@@ -3,13 +3,10 @@ import React from 'react';
 class Day extends React.Component{
   constructor(props){
     super(props);
-
       this.state = {
-        dayNum: this.props.data,
         isActive: this.props.isActive,
         handleClick: this.props.handleClick
       };
-
   }
 
   componentWillReceiveProps(nextProps){
@@ -20,18 +17,35 @@ class Day extends React.Component{
 
   render(){
     let classInfo = "day";
+    
     if(this.state.isActive){
       classInfo += " active"
     }
 
-    let dateInfo = { day: this.state.dayNum, month: this.props.month };
+    if(this.props.data !== undefined){
+      classInfo += " day-info"
+    }
+
+    let dateInfo = {
+      day: this.props.dayNumber,
+      data: this.props.data,
+      month: this.props.month,
+      isActive: this.props.isActive,
+      handleClick: this.props.handleClick
+    };
+
+    let activeDayInfo= {
+      day: dateInfo.day,
+      month: dateInfo.month,
+      data: dateInfo.data
+    };
 
     return(
       <td
-        value={dateInfo}
-        className={classInfo}
-        onClick={() => this.state.handleClick(dateInfo)}>
-        { this.state.dayNum }
+        key={`${dateInfo.day}-${dateInfo.month}`}
+        className={ classInfo }
+        onClick={ () => this.props.handleClick(activeDayInfo) }>
+        { dateInfo.day }
       </td>
     )
   }
