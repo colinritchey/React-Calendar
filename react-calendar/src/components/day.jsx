@@ -14,20 +14,9 @@ class Day extends React.Component{
 
   componentWillReceiveProps(nextProps){
     if(nextProps.isActive !== this.state.isActive){
-      console.log(`yes: ${this.state.dayNum}`);
       this.setState({ isActive: nextProps.isActive });
     }
   }
-
-  // shouldComponentUpdate(nextProps, nextState){
-  //   if(nextProps.isActive !== this.state.isActive){
-  //     console.log(`yes: ${this.state.dayNum}`);
-  //     this.setState({ isActive: nextProps.isActive });
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   render(){
     let classInfo = "day";
@@ -35,8 +24,13 @@ class Day extends React.Component{
       classInfo += " active"
     }
 
+    let dateInfo = { day: this.state.dayNum, month: this.props.month };
+
     return(
-      <td className={classInfo} onClick={(e) => this.state.handleClick(e)}>
+      <td
+        value={dateInfo}
+        className={classInfo}
+        onClick={() => this.state.handleClick(dateInfo)}>
         { this.state.dayNum }
       </td>
     )

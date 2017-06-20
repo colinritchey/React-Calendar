@@ -7,23 +7,21 @@ class Year extends React.Component{
     super(props);
 
     this.state = this.props.data;
-    this.state.activeDay = 15;
+    this.state.activeDay = { day: null, month: null };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(e){
-    // e.preventDefault();
-    console.log(e.target.innerHTML);
-    this.setState( { activeDay: parseInt(e.target.innerHTML) });
+  handleClick(dateInfo){
+    this.setState( { activeDay: dateInfo });
   }
 
   render(){
-    let startDayOfWeek = this.state.months[5].start.dayOfWeek;
-    let endDay = this.state.months[5].end.dayNum;
+    let activeDay = this.state.activeDay;
 
-    let dayNumCounter = 0;
-    let dayOfWeekCounter = 0;
+    if(activeDay.day === null && activeDay.month === null){
+      activeDay= { day: "unselected", month: "unselected" };
+    }
 
     let daysOfWeek = {
       0: "Sunday",
@@ -36,61 +34,26 @@ class Year extends React.Component{
     }
 
     return(
+      <div className="year-container">
 
-      <Month
-        data={this.state.months[5]}
-        activeDay={this.state.activeDay}
-        handleClick={this.handleClick}/>
-      // <table>
-      //   <tbody>
-      //     <tr>
-      //       <th>Sun</th>
-      //       <th>Mon</th>
-      //       <th>Tues</th>
-      //       <th>Wed</th>
-      //       <th>Thur</th>
-      //       <th>Fri</th>
-      //       <th>Sat</th>
-      //     </tr>
-      //     {
-      //       [0, 1, 2, 3, 4].map((i) =>{
-      //         return(
-      //           <tr>
-      //             {
-      //               Object.keys(daysOfWeek).map((id) =>{
-      //
-      //                 if(startDayOfWeek === daysOfWeek[id]
-      //                   || (dayNumCounter > 0 && dayNumCounter < endDay)){
-      //                   dayNumCounter++;
-      //
-      //                   let activeState = "";
-      //                   if(this.state.activeDay === dayNumCounter){
-      //                     activeState = "active";
-      //                   }
-      //
-      //                   return(
-      //                     <td
-      //                       className={activeState}
-      //                       onClick={this.handleClick}
-      //                       >{dayNumCounter}</td>
-      //                   );
-      //
-      //                 } else {
-      //                   return(
-      //                     <td></td>
-      //                   )
-      //                 }
-      //
-      //
-      //               })
-      //             }
-      //           </tr>
-      //         )
-      //       })
-      //     }
-      //
-      //   </tbody>
-      // </table>
+        <div className="months">
+          <Month
+            data={this.state.months[5]}
+            activeDay={this.state.activeDay}
+            handleClick={this.handleClick}/>
+
+          <Month
+            data={this.state.months[6]}
+            activeDay={this.state.activeDay}
+            handleClick={this.handleClick}/>
+        </div>
+        <div className="sidebar">
+          <div className="selected-day">
+            <p>Selected Day: {activeDay.day}</p>
+            <p>Selected Month: {activeDay.month}</p>
+          </div>
+        </div>
+      </div>
     )
   }
 }

@@ -9,17 +9,10 @@ class Month extends React.Component{
     this.state = this.props.data;
     this.state.activeDay = this.props.activeDay;
 
-    // this.handleClick = this.handleClick.bind(this);
   }
 
-  // handleClick(e){
-  //   // e.preventDefault();
-  //   console.log(e.target.innerHTML);
-  //   this.setState( { activeDay: parseInt(e.target.innerHTML) });
-  // }
-
   componentWillReceiveProps(nextProps){
-    if(nextProps.activeDay !== this.state.activeDay){
+    if(nextProps.activeDay !== this.state.activeDay ){
       this.setState({ activeDay: nextProps.activeDay });
     }
   }
@@ -29,7 +22,6 @@ class Month extends React.Component{
     let endDay = this.state.end.dayNum;
 
     let dayNumCounter = 0;
-    let dayOfWeekCounter = 0;
 
     let daysOfWeek = {
       0: "Sunday",
@@ -42,55 +34,61 @@ class Month extends React.Component{
     }
 
     return(
-      <table>
-        <tbody>
-          <tr>
-            <th>Sun</th>
-            <th>Mon</th>
-            <th>Tues</th>
-            <th>Wed</th>
-            <th>Thur</th>
-            <th>Fri</th>
-            <th>Sat</th>
-          </tr>
-          {
-            [0, 1, 2, 3, 4].map((i) =>{
-              return(
-                <tr>
-                  {
-                    Object.keys(daysOfWeek).map((id) =>{
+      <div>
+        <h2>{this.state.month}</h2>
 
-                      if(startDayOfWeek === daysOfWeek[id]
-                        || (dayNumCounter > 0 && dayNumCounter < endDay)){
-                        dayNumCounter++;
+        <table>
+          <tbody>
+            <tr>
+              <th>Sun</th>
+              <th>Mon</th>
+              <th>Tues</th>
+              <th>Wed</th>
+              <th>Thur</th>
+              <th>Fri</th>
+              <th>Sat</th>
+            </tr>
+            {
+              [...Array(this.state.numberOfWeeks).keys()].map((i) =>{
+                return(
+                  <tr>
+                    {
+                      Object.keys(daysOfWeek).map((id) =>{
 
-                        let isActive = false;
-                        if(this.state.activeDay === dayNumCounter){
-                          isActive = true;
+                        if(startDayOfWeek === daysOfWeek[id]
+                          || (dayNumCounter > 0 && dayNumCounter < endDay)){
+                          dayNumCounter++;
+
+                          let isActive = false;
+                          if(this.state.activeDay.day === dayNumCounter
+                            && this.state.activeDay.month === this.state.month){
+                            isActive = true;
+                          }
+
+                          return(
+                            <Day
+                              data={dayNumCounter}
+                              month={this.state.month}
+                              isActive={isActive}
+                              handleClick={this.props.handleClick}
+                            />
+                          );
+
+                        } else {
+                          return(
+                            <td></td>
+                          )
                         }
+                      })
+                    }
+                  </tr>
+                )
+              })
+            }
 
-                        return(
-                          <Day
-                            data={dayNumCounter}
-                            isActive={isActive}
-                            handleClick={this.props.handleClick}
-                          />
-                        );
-
-                      } else {
-                        return(
-                          <td></td>
-                        )
-                      }
-                    })
-                  }
-                </tr>
-              )
-            })
-          }
-
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     )
   }
 }
